@@ -1,4 +1,4 @@
-package com.svigelf.spring.embedded.config;
+package com.sergey.didenko.spring.embedded.config;
 
 import liquibase.integration.spring.SpringLiquibase;
 import org.slf4j.Logger;

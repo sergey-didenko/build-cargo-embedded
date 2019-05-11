@@ -1,7 +1,7 @@
 logging:
   level:
     ROOT: INFO
-    com.svigelf.spring.embedded: INFO
+    com.sergey.didenko.spring.embedded: INFO
 
 spring:
   datasource:

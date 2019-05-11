@@ -1,4 +1,4 @@
-package com.svigelf.spring.embedded;
+package com.sergey.didenko.spring.embedded;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
