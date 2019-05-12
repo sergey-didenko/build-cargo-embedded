@@ -13,11 +13,15 @@
 
 **BootRun** - build and run project via terminal
 
-    ./gradlew bootRun
+    bash ./gradlew bootRun
+
+    ./gradlew.bat bootRun
 
 **BootWar** - build project for production
 
-    ./gradlew bootWar
+    bash ./gradlew bootWar
+
+    ./gradlew.bat bootWar
 
 **Jar** Command to run binary
 
