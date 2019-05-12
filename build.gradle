@@ -93,14 +93,35 @@ wrapper {
 	distributionUrl="https://services.gradle.org/distributions/gradle-5.0-all.zip"
 }
 
-//TODO : Cargo properties:
-// cp		=> cargo profile (rWildfly, rTomcat, ldTomcat, leTomcat)
-// ccp		=> cargo container port
-// crh		=> cargo remote host
-// cru		=> cargo remote user
-// crp 		=> cargo remote password
-//
-// cajp		=> tomcat.ajp.port property (only in Tomcat profiles)
+/**
+ * TODO : Cargo properties:
+ * 
+ * cp	=> cargo profile (rWildfly, rTomcat, ldTomcat, leTomcat)
+ * ccp	=> cargo container port
+ * crh	=> cargo remote host
+ * cru	=> cargo remote user
+ * crp 	=> cargo remote password
+ * 
+ * cajp	=> tomcat.ajp.port property (only in Tomcat profiles)
+ * 
+ * TODO : Cargo build configurations:
+ * 
+ * Local Embedded Tomcat
+ * bash ./gradlew bootWar cargoRunLocal -Pcp="leTomcat"
+ * -Pccp="9080" -Pcajp="9081"
+ * 
+ * Local Download Tomcat
+ * bash ./gradlew bootWar cargoRunLocal -Pcp="ldTomcat"
+ * -Pccp="9080" -Pcajp="9081"
+ * 
+ * Remote Tomcat
+ * bash ./gradlew bootWar cargoRedeployRemote -Pcp="rTomcat"
+ * -Pcrh="localhost" -Pccp="8088" -Pcru="admin" -Pcrp="admin" -Pcajp="9081"
+ * 
+ * Remote Wildfly
+ * bash ./gradlew bootWar cargoRedeployRemote -Pcp="rWildfly"
+ * -Pcrh="localhost" -Pccp="9990" -Pcru="admin" -Pcrp="admin"
+ */
 
 ext {
 	remoteHost = project.hasProperty('crh') ? project.property('crh') : 'localhost'
