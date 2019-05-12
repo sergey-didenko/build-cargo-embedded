@@ -106,11 +106,12 @@ ext {
 //  * cargoDeployRemote
 //  * cargoUndeployRemote
 // [Local]
-//  * cargoRedeployLocal
-//  * cargoStartLocal		//start and do other tasks
-//  * cargoStopLocal
 //  * cargoRunLocal			//waits for the user to press CTRL + C to stop
 //  * cargoConfigureLocal
+// [Local] As container
+//  * cargoStartLocal		//start container, deploy
+//  * cargoRedeployLocal	//redeploy to running container
+//  * cargoStopLocal		//stop container
 cargo {
 	/**
 	 * TODO : Tomcat container
@@ -118,13 +119,17 @@ cargo {
 	 * <Connector port="8088" protocol="HTTP/1.1" connectionTimeout="20000" redirectPort="8443" />
 	 */
 	containerId = 'tomcat8x'
-	port = 8088
+	//TODO : Remote port
+	//port = 8088
+	//TODO : Local port
+	port = 9080
 
 	/**
 	 * TODO : Wildfly server
 	 * [org.jboss.as] (Controller Boot Thread) WFLYSRV0051: Admin console listening on http://127.0.0.1:9990
 	 */
 	//containerId = 'wildfly14x'
+	//TODO : Remote port
 	//port = 9990
 
 	/**
@@ -137,9 +142,25 @@ cargo {
 	}
 
 	/**
+	 * TODO : Local settings for Tomcat
+	 */
+	local {
+		installer {
+			installUrl = 'http://repo1.maven.org/maven2/org/apache/tomcat/tomcat/8.5.37/tomcat-8.5.37.zip'
+			downloadDir = file("$buildDir/download")
+			extractDir = file("$buildDir")
+		}
+		
+		logLevel = 'low'
+		outputFile = file("$buildDir/tomcat-output.log")
+		logFile = file("$buildDir/cargo-output.log")
+	}
+
+	/**
 	 * TODO : Each war == each deployable block
 	 */
 	deployable {
+		file = file("$buildDir/libs/build-cargo-embedded.war")
 		context = 'build-cargo-embedded'
 	}
 }
