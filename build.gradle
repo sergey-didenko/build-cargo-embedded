@@ -53,11 +53,12 @@ configurations {
 dependencies {
 	//[Spring] Web -> @RestController, @RequestMapping,...
 	implementation('org.springframework.boot:spring-boot-starter-web') {
-		//TODO : For WildFly server
-		exclude module: "spring-boot-starter-tomcat"
+		//TODO : For WildFly server only
+		//exclude module: "spring-boot-starter-tomcat"
 	}
+	//TODO : For WildFly server only
 	//TODO : When starter-tomcat excluded, provide for bootRun
-	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+	//providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 
 	//[Spring] JPA Repository for DB
 	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
@@ -93,6 +94,12 @@ wrapper {
 	distributionUrl="https://services.gradle.org/distributions/gradle-5.0-all.zip"
 }
 
+ext {
+	remoteHost = project.hasProperty('rh') ? project.property('rh') : 'localhost'
+	remoteUser = project.hasProperty('ru') ? project.property('ru') : 'admin'
+	remotePassword = project.hasProperty('rp') ? project.property('rp') : 'admin'
+}
+
 //Cargo tasks (do build first):
 // [Remote]
 //  * cargoRedeployRemote
@@ -110,23 +117,23 @@ cargo {
 	 * ./conf/server.xml, in <Server> tag
 	 * <Connector port="8088" protocol="HTTP/1.1" connectionTimeout="20000" redirectPort="8443" />
 	 */
-	//containerId = 'tomcat8x'
-	//port = 8088
+	containerId = 'tomcat8x'
+	port = 8088
 
 	/**
 	 * TODO : Wildfly server
 	 * [org.jboss.as] (Controller Boot Thread) WFLYSRV0051: Admin console listening on http://127.0.0.1:9990
 	 */
-	containerId = 'wildfly14x'
-	port = 9990
+	//containerId = 'wildfly14x'
+	//port = 9990
 
 	/**
 	 * TODO : Remote settings
 	 */
 	remote {
-		hostname = 'localhost'
-		username = 'admin'
-		password = 'admin'
+		hostname = "$remoteHost"
+		username = "$remoteUser"
+		password = "$remotePassword"
 	}
 
 	/**
