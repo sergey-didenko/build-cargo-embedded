@@ -1,0 +1,47 @@
+ext {
+    containerPort = project.hasProperty('ccp') ? project.property('ccp') : 9080
+    tomcatAjp = project.hasProperty('cajp') ? project.property('cajp') : 9081
+}
+
+//Cargo tasks (do build first):
+// [Remote]
+//  * cargoRedeployRemote
+//  * cargoDeployRemote
+//  * cargoUndeployRemote
+// [Local]
+//  * cargoRunLocal			//waits for the user to press CTRL + C to stop
+//  * cargoConfigureLocal
+// [Local] As container
+//  * cargoStartLocal		//start container, deploy
+//  * cargoRedeployLocal	//redeploy to running container
+//  * cargoStopLocal		//stop container
+cargo {
+    /**
+     * TODO : Tomcat container
+     * ./conf/server.xml, in <Server> tag
+     * <Connector port="8088" protocol="HTTP/1.1" connectionTimeout="20000" redirectPort="8443" />
+     */
+    containerId = 'tomcat8x'
+    //TODO : Local port 9080
+    port = containerPort as Integer
+
+    /**
+     * TODO : Local settings for Tomcat
+     */
+    local {
+        //TODO : Download embedded Tomcat
+        installer {
+        	installUrl = 'http://repo1.maven.org/maven2/org/apache/tomcat/tomcat/8.5.37/tomcat-8.5.37.zip'
+        	downloadDir = file("$buildDir/download")
+        	extractDir = file("$buildDir")
+        }
+
+        logLevel = 'low'
+        outputFile = file("$buildDir/tomcat-output.log")
+        logFile = file("$buildDir/cargo-output.log")
+
+        containerProperties {
+            property 'cargo.tomcat.ajp.port', tomcatAjp as Integer
+        }
+    }
+}

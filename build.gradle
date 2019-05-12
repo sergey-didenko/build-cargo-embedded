@@ -48,17 +48,16 @@ repositories {
 
 configurations {
 	providedRuntime
+
+	//If deploy - exclude embedded tomcat from SpringBoot
+	if (project.hasProperty('cp')) {
+		implementation.exclude module: "spring-boot-starter-tomcat"
+	}
 }
 
 dependencies {
 	//[Spring] Web -> @RestController, @RequestMapping,...
-	implementation('org.springframework.boot:spring-boot-starter-web') {
-		//TODO : For WildFly server only
-		//exclude module: "spring-boot-starter-tomcat"
-	}
-	//TODO : For WildFly server only
-	//TODO : When starter-tomcat excluded, provide for bootRun
-	//providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+	implementation('org.springframework.boot:spring-boot-starter-web')
 
 	//[Spring] JPA Repository for DB
 	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
@@ -94,10 +93,37 @@ wrapper {
 	distributionUrl="https://services.gradle.org/distributions/gradle-5.0-all.zip"
 }
 
+//TODO : Cargo properties:
+// cp		=> cargo profile (rWildfly, rTomcat, ldTomcat, leTomcat)
+// ccp		=> cargo container port
+// crh		=> cargo remote host
+// cru		=> cargo remote user
+// crp 		=> cargo remote password
+//
+// cajp		=> tomcat.ajp.port property (only in Tomcat profiles)
+
 ext {
-	remoteHost = project.hasProperty('rh') ? project.property('rh') : 'localhost'
-	remoteUser = project.hasProperty('ru') ? project.property('ru') : 'admin'
-	remotePassword = project.hasProperty('rp') ? project.property('rp') : 'admin'
+	remoteHost = project.hasProperty('crh') ? project.property('crh') : 'localhost'
+	remoteUser = project.hasProperty('cru') ? project.property('cru') : 'admin'
+	remotePassword = project.hasProperty('crp') ? project.property('crp') : 'admin'
+}
+
+//TODO : Switch cargo profile
+if (project.hasProperty('cp')) {
+	switch (project.property('cp')) {
+		case 'rWildfly':
+			apply from: 'gradle/cargo_remote_wildfly.gradle'
+			break
+		case 'rTomcat':
+			apply from: 'gradle/cargo_remote_tomcat.gradle'
+			break
+		case 'ldTomcat':
+			apply from: 'gradle/cargo_local_download_tomcat.gradle'
+			break
+		case 'leTomcat':
+			apply from: 'gradle/cargo_local_embedded_tomcat.gradle'
+			break
+	}
 }
 
 //Cargo tasks (do build first):
@@ -113,57 +139,6 @@ ext {
 //  * cargoRedeployLocal	//redeploy to running container
 //  * cargoStopLocal		//stop container
 cargo {
-	/**
-	 * TODO : Tomcat container
-	 * ./conf/server.xml, in <Server> tag
-	 * <Connector port="8088" protocol="HTTP/1.1" connectionTimeout="20000" redirectPort="8443" />
-	 */
-	containerId = 'tomcat8x'
-	//TODO : Remote port
-	//port = 8088
-	//TODO : Local port
-	port = 9080
-
-	/**
-	 * TODO : Wildfly server
-	 * [org.jboss.as] (Controller Boot Thread) WFLYSRV0051: Admin console listening on http://127.0.0.1:9990
-	 */
-	//containerId = 'wildfly14x'
-	//TODO : Remote port
-	//port = 9990
-
-	/**
-	 * TODO : Remote settings
-	 */
-	remote {
-		hostname = "$remoteHost"
-		username = "$remoteUser"
-		password = "$remotePassword"
-	}
-
-	/**
-	 * TODO : Local settings for Tomcat
-	 */
-	local {
-		//TODO : Download embedded Tomcat
-		//installer {
-		//	installUrl = 'http://repo1.maven.org/maven2/org/apache/tomcat/tomcat/8.5.37/tomcat-8.5.37.zip'
-		//	downloadDir = file("$buildDir/download")
-		//	extractDir = file("$buildDir")
-		//}
-		
-		//TODO : Or existing
-		homeDir = file("$rootDir/embedded/apache-tomcat-8.5.37")
-
-		logLevel = 'low'
-		outputFile = file("$buildDir/tomcat-output.log")
-		logFile = file("$buildDir/cargo-output.log")
-
-		containerProperties {
-			property 'cargo.tomcat.ajp.port', 9081
-		}
-	}
-
 	/**
 	 * TODO : Each war == each deployable block
 	 */
