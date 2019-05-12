@@ -11,9 +11,17 @@
 ## Build configuration
 #### Terminal tasks
 
+**BootRun** - build and run project via terminal
+
+    ./gradlew bootRun
+
+**BootWar** - build project for production
+
+    ./gradlew bootWar
+
 **Jar** Command to run binary
 
-    java -jar build/*.war
+    java -jar build/libs/*.war
 
 #### Intellij IDEA configuration
 
