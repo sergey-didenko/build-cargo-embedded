@@ -145,15 +145,23 @@ cargo {
 	 * TODO : Local settings for Tomcat
 	 */
 	local {
-		installer {
-			installUrl = 'http://repo1.maven.org/maven2/org/apache/tomcat/tomcat/8.5.37/tomcat-8.5.37.zip'
-			downloadDir = file("$buildDir/download")
-			extractDir = file("$buildDir")
-		}
+		//TODO : Download embedded Tomcat
+		//installer {
+		//	installUrl = 'http://repo1.maven.org/maven2/org/apache/tomcat/tomcat/8.5.37/tomcat-8.5.37.zip'
+		//	downloadDir = file("$buildDir/download")
+		//	extractDir = file("$buildDir")
+		//}
 		
+		//TODO : Or existing
+		homeDir = file("$rootDir/embedded/apache-tomcat-8.5.37")
+
 		logLevel = 'low'
 		outputFile = file("$buildDir/tomcat-output.log")
 		logFile = file("$buildDir/cargo-output.log")
+
+		containerProperties {
+			property 'cargo.tomcat.ajp.port', 9081
+		}
 	}
 
 	/**
