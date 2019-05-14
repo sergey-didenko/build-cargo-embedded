@@ -107,20 +107,20 @@ wrapper {
  * TODO : Cargo build configurations:
  * 
  * Local Embedded Tomcat
- * bash ./gradlew bootWar cargoRunLocal -Pcp="leTomcat"
- * -Pccp="9080" -Pcajp="9081"
+ * bash ./gradlew bootWar cargoRunLocal -Pcp=leTomcat
+ * -Pccp=9080 -Pcajp=9081
  * 
  * Local Download Tomcat
- * bash ./gradlew bootWar cargoRunLocal -Pcp="ldTomcat"
- * -Pccp="9080" -Pcajp="9081"
+ * bash ./gradlew bootWar cargoRunLocal -Pcp=ldTomcat
+ * -Pccp=9080 -Pcajp=9081
  * 
  * Remote Tomcat
- * bash ./gradlew bootWar cargoRedeployRemote -Pcp="rTomcat"
- * -Pcrh="localhost" -Pccp="8088" -Pcru="admin" -Pcrp="admin" -Pcajp="9081"
+ * bash ./gradlew bootWar cargoRedeployRemote -Pcp=rTomcat
+ * -Pcrh=localhost -Pccp=8088 -Pcru=admin -Pcrp=admin -Pcajp=9081
  * 
  * Remote Wildfly
- * bash ./gradlew bootWar cargoRedeployRemote -Pcp="rWildfly"
- * -Pcrh="localhost" -Pccp="9990" -Pcru="admin" -Pcrp="admin"
+ * bash ./gradlew bootWar cargoRedeployRemote -Pcp=rWildfly
+ * -Pcrh=localhost -Pccp=9990 -Pcru=admin -Pcrp=admin
  */
 
 ext {
