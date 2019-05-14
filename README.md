@@ -15,13 +15,13 @@
 
     bash ./gradlew bootRun
 
-    ./gradlew.bat bootRun
+    gradlew.bat bootRun
 
 **BootWar** - build project for production
 
     bash ./gradlew bootWar
 
-    ./gradlew.bat bootWar
+    gradlew.bat bootWar
 
 **Jar** Command to run binary
 
