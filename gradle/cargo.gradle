@@ -1,0 +1,57 @@
+/**
+ * TODO : Cargo properties:
+ *
+ * cp	=> cargo profile (rWildfly, rTomcat, ldTomcat, leTomcat)
+ * ccp	=> cargo container port
+ * crh	=> cargo remote host
+ * cru	=> cargo remote user
+ * crp 	=> cargo remote password
+ *
+ * cajp	=> tomcat.ajp.port property (only in Tomcat profiles)
+ *
+ * TODO : Cargo build configurations:
+ *
+ * Local Embedded Tomcat
+ * bash ./gradlew bootWar cargoRunLocal -Pcp=leTomcat
+ * -Pccp=9080 -Pcajp=9081
+ *
+ * Local Download Tomcat
+ * bash ./gradlew bootWar cargoRunLocal -Pcp=ldTomcat
+ * -Pccp=9080 -Pcajp=9081
+ *
+ * Remote Tomcat
+ * bash ./gradlew bootWar cargoRedeployRemote -Pcp=rTomcat
+ * -Pcrh=localhost -Pccp=8088 -Pcru=admin -Pcrp=admin -Pcajp=9081
+ *
+ * Remote Wildfly
+ * bash ./gradlew bootWar cargoRedeployRemote -Pcp=rWildfly
+ * -Pcrh=localhost -Pccp=9990 -Pcru=admin -Pcrp=admin
+ */
+
+ext {
+    remoteHost = project.hasProperty('crh') ? project.property('crh') : 'localhost'
+    remoteUser = project.hasProperty('cru') ? project.property('cru') : 'admin'
+    remotePassword = project.hasProperty('crp') ? project.property('crp') : 'admin'
+}
+
+//Cargo tasks (do build first):
+// [Remote]
+//  * cargoRedeployRemote
+//  * cargoDeployRemote
+//  * cargoUndeployRemote
+// [Local]
+//  * cargoRunLocal			//waits for the user to press CTRL + C to stop
+//  * cargoConfigureLocal
+// [Local] As container
+//  * cargoStartLocal		//start container, deploy
+//  * cargoRedeployLocal	//redeploy to running container
+//  * cargoStopLocal		//stop container
+cargo {
+    /**
+     * TODO : Each war == each deployable block
+     */
+    deployable {
+        file = file("$buildDir/libs/build-cargo-embedded.war")
+        context = 'build-cargo-embedded'
+    }
+}
