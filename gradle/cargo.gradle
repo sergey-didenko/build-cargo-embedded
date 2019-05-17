@@ -55,3 +55,21 @@ cargo {
         context = 'build-cargo-embedded'
     }
 }
+
+//TODO : Switch cargo profile
+if (project.hasProperty('cp')) {
+    switch (project.property('cp')) {
+        case 'rWildfly':
+            apply from: 'gradle/cargo_remote_wildfly.gradle'
+            break
+        case 'rTomcat':
+            apply from: 'gradle/cargo_remote_tomcat.gradle'
+            break
+        case 'ldTomcat':
+            apply from: 'gradle/cargo_local_download_tomcat.gradle'
+            break
+        case 'leTomcat':
+            apply from: 'gradle/cargo_local_embedded_tomcat.gradle'
+            break
+    }
+}
