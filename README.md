@@ -5,6 +5,7 @@ Project to check the features of the cargo plugin
 ## Technology stack
  
  **Back-end stack :**
+ - [JPAModelGen][] - meta-model generator for JPA2
  - [Liquibase][] - DB migration tool
  - [Spring boot][] - java web framework
  - [Embedded Tomcat][] - servlet container to run project
@@ -106,6 +107,7 @@ Required parameter is **-Pcp**, the other parameters have default values ​​a
  and enable checkbox **Delegate IDE build/run actions to gradle**
 
 [Spring boot]: https://spring.io/
+[JPAModelGen]: https://docs.jboss.org/hibernate/jpamodelgen/1.0/reference/en-US/html_single
 [Liquibase]: https://www.liquibase.org/
 [Embedded Tomcat]: http://tomcat.apache.org/
 [Gradle]: https://gradle.org/
